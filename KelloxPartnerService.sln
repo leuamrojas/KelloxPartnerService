@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KelloxPartnerWCF", "KelloxPartnerWCF\KelloxPartnerWCF.csproj", "{7624EA34-DA63-47FC-BB68-7B8EDDC81163}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KelloxPartnerHost", "KelloxPartnerHost\KelloxPartnerHost.csproj", "{BA39FDE1-F060-43B0-BF59-F0B3C1D6C654}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{2650B3B2-B84A-4315-B1A9-D99344A30BBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7624EA34-DA63-47FC-BB68-7B8EDDC81163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7624EA34-DA63-47FC-BB68-7B8EDDC81163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7624EA34-DA63-47FC-BB68-7B8EDDC81163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7624EA34-DA63-47FC-BB68-7B8EDDC81163}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA39FDE1-F060-43B0-BF59-F0B3C1D6C654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA39FDE1-F060-43B0-BF59-F0B3C1D6C654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA39FDE1-F060-43B0-BF59-F0B3C1D6C654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA39FDE1-F060-43B0-BF59-F0B3C1D6C654}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2650B3B2-B84A-4315-B1A9-D99344A30BBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2650B3B2-B84A-4315-B1A9-D99344A30BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2650B3B2-B84A-4315-B1A9-D99344A30BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2650B3B2-B84A-4315-B1A9-D99344A30BBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

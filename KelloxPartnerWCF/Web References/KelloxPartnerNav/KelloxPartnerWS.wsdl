@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:tns="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS" targetNamespace="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <schema elementFormDefault="qualified" targetNamespace="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS" xmlns="http://www.w3.org/2001/XMLSchema">
+      <element name="ReceiveOrder">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="reservationInputXml" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="bigTextP" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ReceiveOrder_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="bigTextP" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="__LocalFunctions__">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="__LocalFunctions___Result">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+      <element name="GetCustomerCreditAmount">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="custNoP" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="outstOrderAmtP" type="decimal" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="GetCustomerCreditAmount_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="return_value" type="decimal" />
+            <element minOccurs="1" maxOccurs="1" name="outstOrderAmtP" type="decimal" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="Chr">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="aSCIIValue" type="int" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="Chr_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="return_value" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ChrErstatt">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="tekst" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ChrErstatt_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="return_value" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="tekst" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ErstattChr">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="tekst" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ErstattChr_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="return_value" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="tekst" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="Template">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="customerNoP" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="bigTextP" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="Template_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="bigTextP" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="FormatDateG">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="txtDateP" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="FormatDateG_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="return_value" type="date" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="FormatOutputDate">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="inputDateP" type="date" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="FormatOutputDate_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="return_value" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="CreditLimitCheckFromQuickOrder">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="orderIdP" type="int" />
+            <element minOccurs="1" maxOccurs="1" name="customerNoP" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="availCrAmountP" type="decimal" />
+            <element minOccurs="1" maxOccurs="1" name="orderAmtP" type="decimal" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="CreditLimitCheckFromQuickOrder_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="return_value" type="boolean" />
+            <element minOccurs="1" maxOccurs="1" name="availCrAmountP" type="decimal" />
+            <element minOccurs="1" maxOccurs="1" name="orderAmtP" type="decimal" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="Update_log">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="xmlLogIdP" type="int" />
+            <element minOccurs="1" maxOccurs="1" name="bigTextP" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="Update_log_Result">
+        <complexType>
+          <sequence />
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <message name="ReceiveOrder">
+    <part name="parameters" element="tns:ReceiveOrder" />
+  </message>
+  <message name="ReceiveOrder_Result">
+    <part name="parameters" element="tns:ReceiveOrder_Result" />
+  </message>
+  <message name="__LocalFunctions__">
+    <part name="parameters" element="tns:__LocalFunctions__" />
+  </message>
+  <message name="__LocalFunctions___Result">
+    <part name="parameters" element="tns:__LocalFunctions___Result" />
+  </message>
+  <message name="GetCustomerCreditAmount">
+    <part name="parameters" element="tns:GetCustomerCreditAmount" />
+  </message>
+  <message name="GetCustomerCreditAmount_Result">
+    <part name="parameters" element="tns:GetCustomerCreditAmount_Result" />
+  </message>
+  <message name="Chr">
+    <part name="parameters" element="tns:Chr" />
+  </message>
+  <message name="Chr_Result">
+    <part name="parameters" element="tns:Chr_Result" />
+  </message>
+  <message name="ChrErstatt">
+    <part name="parameters" element="tns:ChrErstatt" />
+  </message>
+  <message name="ChrErstatt_Result">
+    <part name="parameters" element="tns:ChrErstatt_Result" />
+  </message>
+  <message name="ErstattChr">
+    <part name="parameters" element="tns:ErstattChr" />
+  </message>
+  <message name="ErstattChr_Result">
+    <part name="parameters" element="tns:ErstattChr_Result" />
+  </message>
+  <message name="Template">
+    <part name="parameters" element="tns:Template" />
+  </message>
+  <message name="Template_Result">
+    <part name="parameters" element="tns:Template_Result" />
+  </message>
+  <message name="FormatDateG">
+    <part name="parameters" element="tns:FormatDateG" />
+  </message>
+  <message name="FormatDateG_Result">
+    <part name="parameters" element="tns:FormatDateG_Result" />
+  </message>
+  <message name="FormatOutputDate">
+    <part name="parameters" element="tns:FormatOutputDate" />
+  </message>
+  <message name="FormatOutputDate_Result">
+    <part name="parameters" element="tns:FormatOutputDate_Result" />
+  </message>
+  <message name="CreditLimitCheckFromQuickOrder">
+    <part name="parameters" element="tns:CreditLimitCheckFromQuickOrder" />
+  </message>
+  <message name="CreditLimitCheckFromQuickOrder_Result">
+    <part name="parameters" element="tns:CreditLimitCheckFromQuickOrder_Result" />
+  </message>
+  <message name="Update_log">
+    <part name="parameters" element="tns:Update_log" />
+  </message>
+  <message name="Update_log_Result">
+    <part name="parameters" element="tns:Update_log_Result" />
+  </message>
+  <portType name="KelloxPartnerWS_Port">
+    <operation name="ReceiveOrder">
+      <input name="ReceiveOrder" message="tns:ReceiveOrder" />
+      <output name="ReceiveOrder_Result" message="tns:ReceiveOrder_Result" />
+    </operation>
+    <operation name="__LocalFunctions__">
+      <input name="__LocalFunctions__" message="tns:__LocalFunctions__" />
+      <output name="__LocalFunctions___Result" message="tns:__LocalFunctions___Result" />
+    </operation>
+    <operation name="GetCustomerCreditAmount">
+      <input name="GetCustomerCreditAmount" message="tns:GetCustomerCreditAmount" />
+      <output name="GetCustomerCreditAmount_Result" message="tns:GetCustomerCreditAmount_Result" />
+    </operation>
+    <operation name="Chr">
+      <input name="Chr" message="tns:Chr" />
+      <output name="Chr_Result" message="tns:Chr_Result" />
+    </operation>
+    <operation name="ChrErstatt">
+      <input name="ChrErstatt" message="tns:ChrErstatt" />
+      <output name="ChrErstatt_Result" message="tns:ChrErstatt_Result" />
+    </operation>
+    <operation name="ErstattChr">
+      <input name="ErstattChr" message="tns:ErstattChr" />
+      <output name="ErstattChr_Result" message="tns:ErstattChr_Result" />
+    </operation>
+    <operation name="Template">
+      <input name="Template" message="tns:Template" />
+      <output name="Template_Result" message="tns:Template_Result" />
+    </operation>
+    <operation name="FormatDateG">
+      <input name="FormatDateG" message="tns:FormatDateG" />
+      <output name="FormatDateG_Result" message="tns:FormatDateG_Result" />
+    </operation>
+    <operation name="FormatOutputDate">
+      <input name="FormatOutputDate" message="tns:FormatOutputDate" />
+      <output name="FormatOutputDate_Result" message="tns:FormatOutputDate_Result" />
+    </operation>
+    <operation name="CreditLimitCheckFromQuickOrder">
+      <input name="CreditLimitCheckFromQuickOrder" message="tns:CreditLimitCheckFromQuickOrder" />
+      <output name="CreditLimitCheckFromQuickOrder_Result" message="tns:CreditLimitCheckFromQuickOrder_Result" />
+    </operation>
+    <operation name="Update_log">
+      <input name="Update_log" message="tns:Update_log" />
+      <output name="Update_log_Result" message="tns:Update_log_Result" />
+    </operation>
+  </portType>
+  <binding name="KelloxPartnerWS_Binding" type="tns:KelloxPartnerWS_Port">
+    <binding transport="http://schemas.xmlsoap.org/soap/http" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    <operation name="ReceiveOrder">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS:ReceiveOrder" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ReceiveOrder">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ReceiveOrder_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="__LocalFunctions__">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS:__LocalFunctions__" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="__LocalFunctions__">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="__LocalFunctions___Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="GetCustomerCreditAmount">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS:GetCustomerCreditAmount" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="GetCustomerCreditAmount">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="GetCustomerCreditAmount_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="Chr">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS:Chr" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="Chr">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="Chr_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="ChrErstatt">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS:ChrErstatt" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ChrErstatt">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ChrErstatt_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="ErstattChr">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS:ErstattChr" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ErstattChr">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ErstattChr_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="Template">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS:Template" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="Template">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="Template_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="FormatDateG">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS:FormatDateG" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="FormatDateG">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="FormatDateG_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="FormatOutputDate">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS:FormatOutputDate" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="FormatOutputDate">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="FormatOutputDate_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="CreditLimitCheckFromQuickOrder">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS:CreditLimitCheckFromQuickOrder" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="CreditLimitCheckFromQuickOrder">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="CreditLimitCheckFromQuickOrder_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="Update_log">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/KelloxPartnerWS:Update_log" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="Update_log">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="Update_log_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+  </binding>
+  <service name="KelloxPartnerWS">
+    <port name="KelloxPartnerWS_Port" binding="tns:KelloxPartnerWS_Binding">
+      <address location="http://localhost:7048/DynamicsNAV/WS/Kellox%20AS/Codeunit/KelloxPartnerWS" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    </port>
+  </service>
+</definitions>
