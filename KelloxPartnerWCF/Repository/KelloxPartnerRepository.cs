@@ -5,7 +5,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 
-namespace KelloxPartnerWCF
+namespace KelloxPartnerWCF.Repository
 {
     public class KelloxPartnerRepository : IKelloxPartnerRepository
     {
@@ -20,12 +20,14 @@ namespace KelloxPartnerWCF
 
         public string ReceiveOrder(string orderInputXml)
         {
-            string outputString = "";
+            string outputXml = "";
             Utilities.SetXmlEncodingIBM865(ref orderInputXml);
 
-            _navClient.ReceiveOrder(orderInputXml, ref outputString);
+            System.Diagnostics.EventLog.WriteEntry("KelloxPartnerService", "InputXml: " + orderInputXml);
+            _navClient.ReceiveOrder(orderInputXml, ref outputXml);
+            System.Diagnostics.EventLog.WriteEntry("KelloxPartnerService", "OutputXml: " + outputXml);
 
-            return outputString;
+            return outputXml;
         }
     }
 }

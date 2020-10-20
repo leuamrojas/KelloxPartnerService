@@ -31,7 +31,7 @@ namespace KelloxPartnerWCF
                 xw.Close();
             }            
 
-            //System.Diagnostics.EventLog.WriteEntry("KelloxServiceHost", "InputXml: " + System.Net.WebUtility.HtmlDecode(sb.ToString()));
+            //System.Diagnostics.EventLog.WriteEntry("KelloxPartnerService", "InputXml: " + System.Net.WebUtility.HtmlDecode(sb.ToString()));
             //_logger.Info(string.Format("Received: \n\n{0}\n\nClient IP address: {1}", System.Net.WebUtility.HtmlDecode(sb.ToString()), Utilities.TryToGetClientIpAddress()));            
             
             return null;
@@ -52,7 +52,7 @@ namespace KelloxPartnerWCF
             var xmlStr = System.Net.WebUtility.HtmlDecode(bodyReader.ReadOuterXml()).Replace(XmlDeclaration, "");
             xmlStr = XmlDeclaration + xmlStr;
 
-            System.Diagnostics.EventLog.WriteEntry("KelloxServiceHost", "Message Body: \n" + xmlStr);
+            //System.Diagnostics.EventLog.WriteEntry("KelloxPartnerService", "OutputXml: \n" + xmlStr);
 
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlStr);

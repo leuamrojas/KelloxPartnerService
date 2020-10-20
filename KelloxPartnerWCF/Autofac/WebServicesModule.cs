@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using KelloxPartnerWCF.KelloxPartnerNav;
+using KelloxPartnerWCF.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

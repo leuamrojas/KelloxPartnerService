@@ -1,5 +1,6 @@
 ﻿using KelloxPartnerWCF.Inspectors;
 using KelloxPartnerWCF.KelloxPartnerNav;
+using KelloxPartnerWCF.Repository;
 using log4net;
 using log4net.Config;
 using System;

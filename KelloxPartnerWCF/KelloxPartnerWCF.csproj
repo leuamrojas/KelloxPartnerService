@@ -79,10 +79,10 @@
   <ItemGroup>
     <Compile Include="ServiceHostInitializer.cs" />
     <Compile Include="Autofac\WebServicesModule.cs" />
-    <Compile Include="IKelloxPartnerRepository.cs" />
+    <Compile Include="Repository\IKelloxPartnerRepository.cs" />
     <Compile Include="IKelloxPartnerService.cs" />
     <Compile Include="Inspectors\LoggerMessageInspectorBehavior.cs" />
-    <Compile Include="KelloxPartnerRepository.cs" />
+    <Compile Include="Repository\KelloxPartnerRepository.cs" />
     <Compile Include="KelloxPartnerService.cs" />
     <Compile Include="Inspectors\LoggerMessageInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
