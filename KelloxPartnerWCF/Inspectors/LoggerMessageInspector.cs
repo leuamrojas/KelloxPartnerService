@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+using System.ServiceModel.Web;
 using System.Text;
 using System.Web;
 using System.Xml;
@@ -16,8 +18,7 @@ namespace KelloxPartnerWCF
     {        
         private const string XmlDeclaration = "<?xml version=\"1.0\" encoding=\"ISO-8859-2\"?>";
 
-        //private static readonly ILog _logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        //public ILog Log { get; set; }
+        //private static readonly ILog _logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);        
 
         public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
         {
@@ -42,27 +43,33 @@ namespace KelloxPartnerWCF
             MessageBuffer buffer = reply.CreateBufferedCopy(Int32.MaxValue);
             reply = buffer.CreateMessage();
 
-            SaveToLog(buffer.CreateMessage());
+            CreateLogResponse(buffer.CreateMessage());
         }
 
-        private void SaveToLog(Message message)
+        private void CreateLogResponse(Message message)
         {
             XmlDictionaryReader bodyReader = message.GetReaderAtBodyContents();
 
             var xmlStr = System.Net.WebUtility.HtmlDecode(bodyReader.ReadOuterXml()).Replace(XmlDeclaration, "");
             xmlStr = XmlDeclaration + xmlStr;
 
-            //System.Diagnostics.EventLog.WriteEntry("KelloxPartnerService", "OutputXml: \n" + xmlStr);
-
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlStr);
 
-            var OrderNo = xmlDoc.DocumentElement.GetElementsByTagName("OrderNo").Item(0).InnerText;
+            var orderNo = xmlDoc.DocumentElement.GetElementsByTagName("OrderNo").Item(0).InnerText;
+            CreateIpAddressLog(orderNo);
 
-            CreateLogFile(OrderNo);
+            var strHttpCode = xmlDoc.DocumentElement.GetElementsByTagName("httpCode").Item(0).InnerText;
+
+            int httpCode;
+            if (Int32.TryParse(strHttpCode, out httpCode))
+            {
+                System.Diagnostics.EventLog.WriteEntry("KelloxPartnerService", "SetHttpResponseCode before: " + httpCode);
+                UpdateHttpResponseCode(httpCode);                
+            }
         }
 
-        private void CreateLogFile(string OrderNo) 
+        private void CreateIpAddressLog(string OrderNo)
         {
             if (string.IsNullOrEmpty(OrderNo))
             {
@@ -70,6 +77,58 @@ namespace KelloxPartnerWCF
                 return;
             }
             File.WriteAllText(@"Log\" + OrderNo + ".txt", Utilities.TryToGetClientIpAddress());
+        }
+
+        private void UpdateHttpResponseCode(int httpCode)
+        {
+            WebOperationContext ctx = WebOperationContext.Current;
+
+            switch (httpCode)
+            {
+                case 200: ctx.OutgoingResponse.StatusCode = HttpStatusCode.OK;
+                    ctx.OutgoingResponse.StatusDescription = Constants.HttpResponseStatusDescription.Success200;
+                    break;
+                case 201: ctx.OutgoingResponse.StatusCode = HttpStatusCode.Created;
+                    ctx.OutgoingResponse.StatusDescription = Constants.HttpResponseStatusDescription.Success201;
+                    break;
+                case 202: ctx.OutgoingResponse.StatusCode = HttpStatusCode.Accepted;
+                    ctx.OutgoingResponse.StatusDescription = Constants.HttpResponseStatusDescription.Success202;
+                    break;
+                case 203: ctx.OutgoingResponse.StatusCode = HttpStatusCode.NonAuthoritativeInformation;
+                    ctx.OutgoingResponse.StatusDescription = Constants.HttpResponseStatusDescription.Success203;
+                    break;
+                case 204: ctx.OutgoingResponse.StatusCode = HttpStatusCode.NoContent;
+                    ctx.OutgoingResponse.StatusDescription = Constants.HttpResponseStatusDescription.Success204;
+                    break;
+                case 205: ctx.OutgoingResponse.StatusCode = HttpStatusCode.ResetContent;
+                    ctx.OutgoingResponse.StatusDescription = Constants.HttpResponseStatusDescription.Success205;
+                    break;
+                case 400: ctx.OutgoingResponse.StatusCode = HttpStatusCode.BadRequest;
+                    ctx.OutgoingResponse.StatusDescription = Constants.HttpResponseStatusDescription.Error400;
+                    break;
+                case 401: ctx.OutgoingResponse.StatusCode = HttpStatusCode.Unauthorized;
+                    ctx.OutgoingResponse.StatusDescription = Constants.HttpResponseStatusDescription.Error401;
+                    break;
+                case 402: ctx.OutgoingResponse.StatusCode = HttpStatusCode.PaymentRequired;
+                    ctx.OutgoingResponse.StatusDescription = Constants.HttpResponseStatusDescription.Error402;
+                    break;
+                case 403: ctx.OutgoingResponse.StatusCode = HttpStatusCode.Forbidden;
+                    ctx.OutgoingResponse.StatusDescription = Constants.HttpResponseStatusDescription.Error403;
+                    break;
+                case 404: ctx.OutgoingResponse.StatusCode = HttpStatusCode.NotFound;
+                    ctx.OutgoingResponse.StatusDescription = Constants.HttpResponseStatusDescription.Error404;
+                    break;
+                case 405: ctx.OutgoingResponse.StatusCode = HttpStatusCode.MethodNotAllowed;
+                    ctx.OutgoingResponse.StatusDescription = Constants.HttpResponseStatusDescription.Error405;                    
+                    break;
+                case 500: ctx.OutgoingResponse.StatusCode = HttpStatusCode.InternalServerError;
+                    break;
+                case 503: ctx.OutgoingResponse.StatusCode = HttpStatusCode.ServiceUnavailable;
+                    break;
+                default:
+                    break;
+            }
+
         }
 
     }
