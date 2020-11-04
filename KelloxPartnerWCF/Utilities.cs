@@ -14,8 +14,7 @@ namespace KelloxPartnerWCF
         public static void SetXmlEncodingIBM865(ref string xmlData)
         {
             xmlData = XmlEncodingIBM865 + xmlData;
-            xmlData = xmlData.Replace("&", "");
-            //FormatString(ref xmlData);
+            xmlData = xmlData.Replace("&", "");            
         }
 
         /// <summary>
@@ -25,20 +24,25 @@ namespace KelloxPartnerWCF
         public static string TryToGetClientIpAddress()
         {
             var currentOperationContext = OperationContext.Current;
+
             if (currentOperationContext == null)
                 return null;
+
             object nameMessagePropertyRaw;
             if (!currentOperationContext.IncomingMessageProperties.TryGetValue(
                 RemoteEndpointMessageProperty.Name,
                 out nameMessagePropertyRaw)
             )
                 return null;
+
             var nameMessageProperty = nameMessagePropertyRaw as RemoteEndpointMessageProperty;
             if (nameMessageProperty == null)
                 return null;
+
             var ipAddress = nameMessageProperty.Address;
             if (string.IsNullOrWhiteSpace(ipAddress))
                 return null;
+
             return ipAddress.Trim();
         }
     }

@@ -15,9 +15,7 @@ using System.Xml;
 namespace KelloxPartnerWCF
 {
     public class LoggerMessageInspector : IDispatchMessageInspector
-    {        
-        private const string XmlDeclaration = "<?xml version=\"1.0\" encoding=\"ISO-8859-2\"?>";
-
+    {   
         //private static readonly ILog _logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);        
 
         public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
@@ -50,8 +48,8 @@ namespace KelloxPartnerWCF
         {
             XmlDictionaryReader bodyReader = message.GetReaderAtBodyContents();
 
-            var xmlStr = System.Net.WebUtility.HtmlDecode(bodyReader.ReadOuterXml()).Replace(XmlDeclaration, "");
-            xmlStr = XmlDeclaration + xmlStr;
+            var xmlStr = System.Net.WebUtility.HtmlDecode(bodyReader.ReadOuterXml()).Replace(Constants.XmlDeclaration, "");
+            xmlStr = Constants.XmlDeclaration + xmlStr;
 
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlStr);
@@ -65,7 +63,7 @@ namespace KelloxPartnerWCF
             if (Int32.TryParse(strHttpCode, out httpCode))
             {
                 System.Diagnostics.EventLog.WriteEntry("KelloxPartnerService", "SetHttpResponseCode before: " + httpCode);
-                UpdateHttpResponseCode(httpCode);                
+                CreateHttpResponseCode(httpCode);                
             }
         }
 
@@ -79,7 +77,7 @@ namespace KelloxPartnerWCF
             File.WriteAllText(@"Log\" + OrderNo + ".txt", Utilities.TryToGetClientIpAddress());
         }
 
-        private void UpdateHttpResponseCode(int httpCode)
+        private void CreateHttpResponseCode(int httpCode)
         {
             WebOperationContext ctx = WebOperationContext.Current;
 

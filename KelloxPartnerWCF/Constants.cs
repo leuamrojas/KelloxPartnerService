@@ -7,8 +7,10 @@ namespace KelloxPartnerWCF
 {
     public static class Constants
     {
+        public const string XmlDeclaration = "<?xml version=\"1.0\" encoding=\"ISO-8859-2\"?>";
+
         public static class HttpResponseStatusDescription
-        {
+        {            
             public const string Success200 = "Order created successfully, all lines available for delivery";
             public const string Success201 = "Order created successfully, some lines not available for delivery (backorder)";
             public const string Success202 = "Order created successfully, some lines not available. One or more item lines are not available for backorder";

@@ -19,12 +19,14 @@ namespace KelloxPartnerWCF.Repository
         }
 
         public string ReceiveOrder(string orderInputXml)
-        {
-            string outputXml = "";
+        {            
             Utilities.SetXmlEncodingIBM865(ref orderInputXml);
 
             System.Diagnostics.EventLog.WriteEntry("KelloxPartnerService", "InputXml: " + orderInputXml);
+
+            string outputXml = "";
             _navClient.ReceiveOrder(orderInputXml, ref outputXml);
+
             System.Diagnostics.EventLog.WriteEntry("KelloxPartnerService", "OutputXml: " + outputXml);
 
             return outputXml;
