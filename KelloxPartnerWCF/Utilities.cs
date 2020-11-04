@@ -9,11 +9,11 @@ namespace KelloxPartnerWCF
 {
     public class Utilities
     {
-        private const string XmlEncodingIBM865 = "<?xml version=\"1.0\" encoding=\"IBM865\"?>";
+        //private const string XmlEncodingIBM865 = "<?xml version=\"1.0\" encoding=\"IBM865\"?>";
 
         public static void SetXmlEncodingIBM865(ref string xmlData)
         {
-            xmlData = XmlEncodingIBM865 + xmlData;
+            xmlData = Constants.XmlDeclaration + xmlData;
             xmlData = xmlData.Replace("&", "");            
         }
 
