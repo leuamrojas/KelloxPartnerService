@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Infrastructure;
+using KelloxPartnerWCF;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -25,22 +26,25 @@ namespace KelloxPartnerWCF
 
             ServiceHost host = new ServiceHost(typeof(KelloxPartnerWCF.KelloxPartnerService), new Uri[] { new Uri(strAdrHTTPS) });
 
-            ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
-            smb.HttpGetEnabled = false;
-            smb.HttpsGetEnabled = true;
+            //ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
+            //smb.HttpGetEnabled = false;
+            //smb.HttpsGetEnabled = true;
 
-            host.Description.Behaviors.Add(smb);
-            host.Description.Behaviors.Remove(typeof(ServiceDebugBehavior));
-            host.Description.Behaviors.Add(new ServiceDebugBehavior { IncludeExceptionDetailInFaults = true });
+            //host.Description.Behaviors.Add(smb);
+            //host.Description.Behaviors.Remove(typeof(ServiceDebugBehavior));
+            //host.Description.Behaviors.Add(new ServiceDebugBehavior { IncludeExceptionDetailInFaults = true });
 
-            BasicHttpBinding httpbs = new BasicHttpBinding();
-            httpbs.Security.Mode = BasicHttpSecurityMode.Transport;
-            httpbs.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
-            httpbs.MaxBufferSize = 1000000;
-            httpbs.MaxReceivedMessageSize = 1000000;
+            //BasicHttpBinding bhb = new BasicHttpBinding();
+            //bhb.Security.Mode = BasicHttpSecurityMode.Transport;
+            //bhb.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
+            //bhb.MaxBufferSize = 1000000;
+            //bhb.MaxReceivedMessageSize = 1000000;
 
-            host.AddServiceEndpoint(typeof(KelloxPartnerWCF.IKelloxPartnerService), httpbs, strAdrHTTPS);
-            host.AddServiceEndpoint(typeof(IMetadataExchange), MetadataExchangeBindings.CreateMexHttpsBinding(), "mex");
+            //WebHttpBinding whb = new WebHttpBinding();
+
+            //host.AddServiceEndpoint(typeof(KelloxPartnerWCF.IKelloxPartnerService), httpbs, strAdrHTTPS);
+            //host.AddServiceEndpoint(typeof(KelloxPartnerWCF.IKelloxPartnerService), whb, strAdrHTTPS);
+            //host.AddServiceEndpoint(typeof(IMetadataExchange), MetadataExchangeBindings.CreateMexHttpsBinding(), "mex");
 
             System.Diagnostics.EventLog.WriteEntry("KelloxServiceHost", "Kellox Partner Service starting at " + strAdrHTTPS);
 

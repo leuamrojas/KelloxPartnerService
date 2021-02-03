@@ -1,40 +1,120 @@
-﻿using log4net;
+﻿using Infrastructure;
+using log4net;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+using System.ServiceModel.Web;
 using System.Text;
 using System.Web;
 using System.Xml;
 
-namespace KelloxPartnerWCF
+namespace KelloxPartnerWCF.Inspectors
 {
     public class LoggerMessageInspector : IDispatchMessageInspector
-    {        
-        private const string XmlDeclaration = "<?xml version=\"1.0\" encoding=\"ISO-8859-2\"?>";
+    {           
+        private readonly ILog _logger;
+        private readonly bool _logOn;
+        private const string Tag = "KelloxPartnerService";
 
-        //private static readonly ILog _logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        //public ILog Log { get; set; }
+        public LoggerMessageInspector(ILog logger)
+        {
+            _logger = logger;
+            string logging = ConfigurationManager.AppSettings["logging"];
+            if ( !string.IsNullOrEmpty(logging) )
+            {
+                if (!Boolean.TryParse(logging, out _logOn) )
+                {
+                    _logOn = false;
+                }
+            }            
+        }
 
         public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
         {
-            MessageBuffer buffer = request.CreateBufferedCopy(Int32.MaxValue);
-            request = buffer.CreateMessage();
-            Message msg = buffer.CreateMessage();
-            StringBuilder sb = new StringBuilder();
-            using (System.Xml.XmlWriter xw = System.Xml.XmlWriter.Create(sb))
-            {
-                msg.WriteMessage(xw);
-                xw.Close();
-            }            
+            string requestAsString = MessageToString(ref request);
+            if (_logOn)
+            {                
+                if (requestAsString.Length < 32766)
+                {
+                    System.Diagnostics.EventLog.WriteEntry(Tag, string.Format("Request: \n{0}", requestAsString));
+                }
+                else
+                {
+                    string filePath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "KelloxPartnerLog.log");
+                    System.Diagnostics.EventLog.WriteEntry(Tag, string.Format("Generated dump at: {0}", filePath));
+                    _logger.Info(string.Format("Request: \n\n{0}\n\n", requestAsString));
+                } 
+            }
+            return requestAsString;
+        }
 
-            //System.Diagnostics.EventLog.WriteEntry("KelloxServiceHost", "InputXml: " + System.Net.WebUtility.HtmlDecode(sb.ToString()));
-            //_logger.Info(string.Format("Received: \n\n{0}\n\nClient IP address: {1}", System.Net.WebUtility.HtmlDecode(sb.ToString()), Utilities.TryToGetClientIpAddress()));            
-            
-            return null;
+        private string MessageToString(ref Message message)
+        {
+            if (message.IsEmpty) return "";
+
+            WebContentFormat format = WebContentFormat.Default;
+
+            if (message.Properties.ContainsKey(WebBodyFormatMessageProperty.Name))
+            {
+                format = ((WebBodyFormatMessageProperty)message.Properties[WebBodyFormatMessageProperty.Name]).Format;
+            }
+
+            MemoryStream ms = new MemoryStream();
+            XmlDictionaryWriter writer = null;
+            switch (format)
+            {
+                case WebContentFormat.Default:
+                case WebContentFormat.Xml: writer = XmlDictionaryWriter.CreateTextWriter(ms);
+                    break;                
+                case WebContentFormat.Raw:                    
+                    return RawMessageToString(ref message);
+                //case WebContentFormat.Json:
+                //    break;
+            }
+
+            message.WriteMessage(writer);
+            writer.Flush();
+
+            string messageAsString = Encoding.UTF8.GetString(ms.ToArray());
+
+            ms.Position = 0;
+            XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(ms, XmlDictionaryReaderQuotas.Max);
+
+            Message newMessage = Message.CreateMessage(reader, int.MaxValue, message.Version);
+            newMessage.Properties.CopyProperties(message.Properties);
+            message = newMessage;
+
+            return messageAsString;
+        }
+
+        private string RawMessageToString(ref Message message)
+        {
+            XmlDictionaryReader bodyReader = message.GetReaderAtBodyContents();
+            bodyReader.ReadStartElement("Binary");
+            byte[] requestBody = bodyReader.ReadContentAsBase64();
+            string messageAsString = Encoding.UTF8.GetString(requestBody);
+
+            MemoryStream ms = new MemoryStream();
+            XmlDictionaryWriter writer = XmlDictionaryWriter.CreateBinaryWriter(ms);
+            writer.WriteStartElement("Binary");
+            writer.WriteBase64(requestBody, 0, requestBody.Length);
+            writer.WriteEndElement();
+            writer.Flush();
+
+            ms.Position = 0;
+
+            XmlDictionaryReader reader = XmlDictionaryReader.CreateBinaryReader(ms, XmlDictionaryReaderQuotas.Max);
+            Message newMessage = Message.CreateMessage(reader, int.MaxValue, message.Version);
+            newMessage.Properties.CopyProperties(message.Properties);
+            message = newMessage;
+
+            return messageAsString;
         }
 
         public void BeforeSendReply(ref Message reply, object correlationState)
@@ -42,34 +122,23 @@ namespace KelloxPartnerWCF
             MessageBuffer buffer = reply.CreateBufferedCopy(Int32.MaxValue);
             reply = buffer.CreateMessage();
 
-            SaveToLog(buffer.CreateMessage());
-        }
-
-        private void SaveToLog(Message message)
-        {
-            XmlDictionaryReader bodyReader = message.GetReaderAtBodyContents();
-
-            var xmlStr = System.Net.WebUtility.HtmlDecode(bodyReader.ReadOuterXml()).Replace(XmlDeclaration, "");
-            xmlStr = XmlDeclaration + xmlStr;
-
-            System.Diagnostics.EventLog.WriteEntry("KelloxServiceHost", "Message Body: \n" + xmlStr);
-
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(xmlStr);
-
-            var OrderNo = xmlDoc.DocumentElement.GetElementsByTagName("OrderNo").Item(0).InnerText;
-
-            CreateLogFile(OrderNo);
-        }
-
-        private void CreateLogFile(string OrderNo) 
-        {
-            if (string.IsNullOrEmpty(OrderNo))
+            string requestMessage = (string)correlationState;
+            string replyAsString = MessageToString(ref reply);
+            if (_logOn)
             {
-                File.WriteAllText(@"Log\Failed_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt", Utilities.TryToGetClientIpAddress());
-                return;
+                if (replyAsString.Length < 32766)
+                {
+                    System.Diagnostics.EventLog.WriteEntry(Tag, string.Format("Response: \n{0}", replyAsString));
+                }
+                else
+                {
+                    string filePath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "KelloxPartnerLog.log");
+                    System.Diagnostics.EventLog.WriteEntry(Tag, string.Format("Generated dump at: {0}", filePath));
+                    _logger.Info(string.Format("Response: \n\n{0}\n\n", replyAsString));
+                }                
             }
-            File.WriteAllText(@"Log\" + OrderNo + ".txt", Utilities.TryToGetClientIpAddress());
+            ResponseHandler.CreateOrderLog(buffer.CreateMessage());
+
         }
 
     }

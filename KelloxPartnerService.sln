@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KelloxPartnerHost", "Kellox
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{2650B3B2-B84A-4315-B1A9-D99344A30BBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KelloxPartnerData", "KelloxPartnerData\KelloxPartnerData.csproj", "{D4C85AAD-E8E3-4473-9F9B-BA0877C05717}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{2650B3B2-B84A-4315-B1A9-D99344A30BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2650B3B2-B84A-4315-B1A9-D99344A30BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2650B3B2-B84A-4315-B1A9-D99344A30BBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4C85AAD-E8E3-4473-9F9B-BA0877C05717}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4C85AAD-E8E3-4473-9F9B-BA0877C05717}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4C85AAD-E8E3-4473-9F9B-BA0877C05717}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4C85AAD-E8E3-4473-9F9B-BA0877C05717}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
