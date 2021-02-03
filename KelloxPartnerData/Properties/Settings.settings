@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="KelloxPartnerData.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="KelloxPartnerData_KelloxPartnerNav_KelloxPartnerWS" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://localhost:7048/DynamicsNAV/WS/Kellox%20AS/Codeunit/KelloxPartnerWS</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

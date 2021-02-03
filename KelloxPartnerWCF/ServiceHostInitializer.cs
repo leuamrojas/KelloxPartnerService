@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Infrastructure;
+using KelloxPartnerWCF;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

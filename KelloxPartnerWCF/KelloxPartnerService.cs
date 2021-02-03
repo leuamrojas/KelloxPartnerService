@@ -1,6 +1,6 @@
-﻿using KelloxPartnerWCF.Inspectors;
+﻿using KelloxPartnerData.Repository;
+using KelloxPartnerWCF.Inspectors;
 using KelloxPartnerWCF.KelloxPartnerNav;
-using KelloxPartnerWCF.Repository;
 using log4net;
 using log4net.Config;
 using System;
@@ -30,7 +30,7 @@ namespace KelloxPartnerWCF
         {            
             StreamReader reader = new StreamReader(data);
             string inputXml = reader.ReadToEnd();
-
+            
             string outputXml = _kelloxPartnerRepository.ReceiveOrder(inputXml);
             
             XmlDocument xmlDoc = new XmlDocument();

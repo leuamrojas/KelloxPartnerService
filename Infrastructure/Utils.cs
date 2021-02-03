@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace KelloxPartnerWCF
+namespace Infrastructure
 {
-    public class Utilities
+    public class Utils
     {
         //private const string XmlEncodingIBM865 = "<?xml version=\"1.0\" encoding=\"IBM865\"?>";
 
         public static void SetXmlEncodingIBM865(ref string xmlData)
         {
             xmlData = Constants.XmlDeclaration + xmlData;
-            xmlData = xmlData.Replace("&", "");            
+            xmlData = xmlData.Replace("&", "");
         }
 
         /// <summary>

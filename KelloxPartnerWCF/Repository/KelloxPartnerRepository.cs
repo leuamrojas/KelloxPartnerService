@@ -1,4 +1,5 @@
-﻿using KelloxPartnerWCF.KelloxPartnerNav;
+﻿using Infrastructure;
+using KelloxPartnerWCF.KelloxPartnerNav;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,13 +15,13 @@ namespace KelloxPartnerWCF.Repository
         public KelloxPartnerRepository(KelloxPartnerWS navClient)
         {
             _navClient = navClient;
-            _navClient.Url = ConfigurationManager.AppSettings["UrlNav"]; ;
+            _navClient.Url = ConfigurationManager.AppSettings["UrlNav"];
             _navClient.UseDefaultCredentials = true;
         }
 
         public string ReceiveOrder(string orderInputXml)
         {            
-            Utilities.SetXmlEncodingIBM865(ref orderInputXml);
+            Utils.SetXmlEncodingIBM865(ref orderInputXml);
 
             System.Diagnostics.EventLog.WriteEntry("KelloxPartnerService", "InputXml: " + orderInputXml);
 

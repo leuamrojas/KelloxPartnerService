@@ -1,6 +1,8 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -12,6 +14,8 @@ namespace KelloxPartnerWCF.Inspectors
 {
     public class LoggerMessageInspectorBehavior : Attribute, IServiceBehavior
     {
+        private static readonly ILog _logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public void AddBindingParameters(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase, Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters)
         {            
         }
@@ -20,7 +24,7 @@ namespace KelloxPartnerWCF.Inspectors
         {
             foreach (ChannelDispatcher cDispatcher in serviceHostBase.ChannelDispatchers)
                 foreach (EndpointDispatcher eDispatcher in cDispatcher.Endpoints)
-                    eDispatcher.DispatchRuntime.MessageInspectors.Add(new LoggerMessageInspector());
+                    eDispatcher.DispatchRuntime.MessageInspectors.Add(new LoggerMessageInspector(_logger));
         }
 
         public void Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
