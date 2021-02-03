@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace KelloxPartnerWCF
 {
@@ -11,6 +14,12 @@ namespace KelloxPartnerWCF
     public interface IKelloxPartnerService
     {
         [OperationContract]
-        string ReceiveOrder(string orderInputXml);
+        [WebInvoke(
+            Method = "POST",
+            UriTemplate = "/ReceiveOrder",
+            BodyStyle = WebMessageBodyStyle.Bare,
+            RequestFormat = WebMessageFormat.Xml,
+            ResponseFormat = WebMessageFormat.Xml)]
+        XmlElement ReceiveOrder(Stream orderInputXml);
     }
 }
