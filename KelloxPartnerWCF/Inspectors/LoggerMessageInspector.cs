@@ -1,17 +1,11 @@
-﻿using Infrastructure;
-using log4net;
+﻿using log4net;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
-using System.ServiceModel.Web;
 using System.Text;
-using System.Web;
 using System.Xml;
 
 namespace KelloxPartnerWCF.Inspectors
@@ -19,37 +13,25 @@ namespace KelloxPartnerWCF.Inspectors
     public class LoggerMessageInspector : IDispatchMessageInspector
     {           
         private readonly ILog _logger;
-        private readonly bool _logOn;
+        private readonly bool _loggingOn;
         private const string Tag = "KelloxPartnerService";
 
         public LoggerMessageInspector(ILog logger)
         {
             _logger = logger;
-            string logging = ConfigurationManager.AppSettings["logging"];
-            if ( !string.IsNullOrEmpty(logging) )
+            var logging = ConfigurationManager.AppSettings["logging"];
+            if ( !string.IsNullOrEmpty(logging) && !bool.TryParse(logging, out _loggingOn))
             {
-                if (!Boolean.TryParse(logging, out _logOn) )
-                {
-                    _logOn = false;
-                }
+                _loggingOn = false;
             }            
         }
 
         public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
         {
-            string requestAsString = MessageToString(ref request);
-            if (_logOn)
-            {                
-                if (requestAsString.Length < 32766)
-                {
-                    System.Diagnostics.EventLog.WriteEntry(Tag, string.Format("Request: \n{0}", requestAsString));
-                }
-                else
-                {
-                    string filePath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "KelloxPartnerLog.log");
-                    System.Diagnostics.EventLog.WriteEntry(Tag, string.Format("Generated dump at: {0}", filePath));
-                    _logger.Info(string.Format("Request: \n\n{0}\n\n", requestAsString));
-                } 
+            var requestAsString = MessageToString(ref request);
+            if (_loggingOn)
+            {
+                WriteLog(requestAsString);
             }
             return requestAsString;
         }
@@ -65,7 +47,7 @@ namespace KelloxPartnerWCF.Inspectors
                 format = ((WebBodyFormatMessageProperty)message.Properties[WebBodyFormatMessageProperty.Name]).Format;
             }
 
-            MemoryStream ms = new MemoryStream();
+            var ms = new MemoryStream();
             XmlDictionaryWriter writer = null;
             switch (format)
             {
@@ -81,7 +63,7 @@ namespace KelloxPartnerWCF.Inspectors
             message.WriteMessage(writer);
             writer.Flush();
 
-            string messageAsString = Encoding.UTF8.GetString(ms.ToArray());
+            var messageAsString = Encoding.UTF8.GetString(ms.ToArray());
 
             ms.Position = 0;
             XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(ms, XmlDictionaryReaderQuotas.Max);
@@ -98,9 +80,9 @@ namespace KelloxPartnerWCF.Inspectors
             XmlDictionaryReader bodyReader = message.GetReaderAtBodyContents();
             bodyReader.ReadStartElement("Binary");
             byte[] requestBody = bodyReader.ReadContentAsBase64();
-            string messageAsString = Encoding.UTF8.GetString(requestBody);
+            var messageAsString = Encoding.UTF8.GetString(requestBody);
 
-            MemoryStream ms = new MemoryStream();
+            var ms = new MemoryStream();
             XmlDictionaryWriter writer = XmlDictionaryWriter.CreateBinaryWriter(ms);
             writer.WriteStartElement("Binary");
             writer.WriteBase64(requestBody, 0, requestBody.Length);
@@ -117,14 +99,26 @@ namespace KelloxPartnerWCF.Inspectors
             return messageAsString;
         }
 
+        private void WriteLog(string requestAsString)
+        {
+            if (requestAsString.Length < 32766)
+            {
+                System.Diagnostics.EventLog.WriteEntry(Tag, string.Format("Request: \n{0}", requestAsString));
+            }
+            else
+            {
+                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "KelloxPartnerLog.log");
+                System.Diagnostics.EventLog.WriteEntry(Tag, string.Format("Generated dump at: {0}", filePath));
+                _logger.Info(string.Format("Request: \n\n{0}\n\n", requestAsString));
+            }
+        }
+
         public void BeforeSendReply(ref Message reply, object correlationState)
         {
-            MessageBuffer buffer = reply.CreateBufferedCopy(Int32.MaxValue);
+            MessageBuffer buffer = reply.CreateBufferedCopy(int.MaxValue);
             reply = buffer.CreateMessage();
-
-            string requestMessage = (string)correlationState;
-            string replyAsString = MessageToString(ref reply);
-            if (_logOn)
+            var replyAsString = MessageToString(ref reply);
+            if (_loggingOn)
             {
                 if (replyAsString.Length < 32766)
                 {
@@ -132,7 +126,7 @@ namespace KelloxPartnerWCF.Inspectors
                 }
                 else
                 {
-                    string filePath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "KelloxPartnerLog.log");
+                    var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "KelloxPartnerLog.log");
                     System.Diagnostics.EventLog.WriteEntry(Tag, string.Format("Generated dump at: {0}", filePath));
                     _logger.Info(string.Format("Response: \n\n{0}\n\n", replyAsString));
                 }                

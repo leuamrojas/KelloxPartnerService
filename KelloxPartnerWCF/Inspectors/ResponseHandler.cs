@@ -1,12 +1,9 @@
-﻿using Infrastructure;
+﻿using KelloxPartnerWCF.Helpers;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Web;
-using System.Web;
 using System.Xml;
 
 namespace KelloxPartnerWCF.Inspectors
@@ -17,7 +14,7 @@ namespace KelloxPartnerWCF.Inspectors
         {
             XmlDictionaryReader bodyReader = message.GetReaderAtBodyContents();
 
-            var xmlStr = System.Net.WebUtility.HtmlDecode(bodyReader.ReadOuterXml()).Replace(Constants.XmlDeclaration, "");
+            var xmlStr = WebUtility.HtmlDecode(bodyReader.ReadOuterXml()).Replace(Constants.XmlDeclaration, "");
             xmlStr = Constants.XmlDeclaration + xmlStr;
 
             var xmlDoc = new XmlDocument();
@@ -28,9 +25,8 @@ namespace KelloxPartnerWCF.Inspectors
 
             var strHttpCode = xmlDoc.DocumentElement.GetElementsByTagName("httpCode").Item(0).InnerText;
 
-            int httpCode;
-            if (Int32.TryParse(strHttpCode, out httpCode))
-            {                
+            if (int.TryParse(strHttpCode, out int httpCode))
+            {
                 UpdateHttpResponse(httpCode);
             }
         }

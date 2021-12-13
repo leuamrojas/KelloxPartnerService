@@ -1,11 +1,5 @@
-﻿using Infrastructure;
-using KelloxPartnerData.KelloxPartnerNav;
-using System;
-using System.Collections.Generic;
+﻿using KelloxPartnerData.KelloxPartnerNav;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KelloxPartnerData.WebClient
 {
@@ -22,7 +16,7 @@ namespace KelloxPartnerData.WebClient
 
         public string ReceiveOrder(string orderInputXml)
         {
-            Utils.SetXmlEncodingIBM865(ref orderInputXml);
+            Utils.AddEncodingIBM865(ref orderInputXml);
 
             string outputXml = "";
             _kelloxPartnerWS.ReceiveOrder(orderInputXml, ref outputXml);

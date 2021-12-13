@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Configuration;
-using System.Configuration.Install;
-using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
-using System.Threading.Tasks;
 
 namespace KelloxPartnerHost
 {
@@ -18,19 +12,23 @@ namespace KelloxPartnerHost
         private ServiceInstaller service;
 
         public ProjectInstaller()
-        {            
-            process = new ServiceProcessInstaller();
-            process.Account = ServiceAccount.LocalSystem;
+        {
+            process = new ServiceProcessInstaller
+            {
+                Account = ServiceAccount.LocalSystem
+            };
 
             Assembly executingAssembly = Assembly.GetAssembly(typeof(ProjectInstaller));
-            string targetDir = executingAssembly.Location;
-            Configuration config = ConfigurationManager.OpenExeConfiguration(targetDir);            
+            var targetDir = executingAssembly.Location;
+            Configuration config = ConfigurationManager.OpenExeConfiguration(targetDir);
 
-            service = new ServiceInstaller();
-            service.ServiceName = config.AppSettings.Settings["ServiceName"].Value.ToString();
-            service.DisplayName = config.AppSettings.Settings["ServiceName"].Value.ToString();
-            service.Description = config.AppSettings.Settings["ServiceDescription"].Value.ToString();  
-            service.StartType = ServiceStartMode.Automatic;
+            service = new ServiceInstaller
+            {
+                ServiceName = config.AppSettings.Settings["ServiceName"].Value.ToString(),
+                DisplayName = config.AppSettings.Settings["ServiceName"].Value.ToString(),
+                Description = config.AppSettings.Settings["ServiceDescription"].Value.ToString(),
+                StartType = ServiceStartMode.Automatic
+            };
 
             Installers.Add(process);
             Installers.Add(service);

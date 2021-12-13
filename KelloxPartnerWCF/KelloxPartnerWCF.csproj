@@ -21,6 +21,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,14 +42,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.2.0\lib\net45\Autofac.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Autofac.Integration.Wcf, Version=4.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.Wcf.4.1.0\lib\net45\Autofac.Integration.Wcf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="log4net, Version=2.0.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.11\lib\net45\log4net.dll</HintPath>
       <Private>True</Private>
@@ -82,14 +76,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Constants.cs" />
+    <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Inspectors\ResponseHandler.cs" />
-    <Compile Include="ServiceHostInitializer.cs" />
-    <Compile Include="Autofac\WebServicesModule.cs" />
-    <Compile Include="Repository\IKelloxPartnerRepository.cs" />
-    <Compile Include="IKelloxPartnerService.cs" />
+    <Compile Include="Contracts\IKelloxPartnerService.cs" />
     <Compile Include="Inspectors\LoggerMessageInspectorBehavior.cs" />
-    <Compile Include="Repository\KelloxPartnerRepository.cs" />
-    <Compile Include="KelloxPartnerService.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\LogEntry.cs" />
+    <Compile Include="Logging\LoggerExtensions.cs" />
+    <Compile Include="Services\KelloxPartnerService.cs" />
     <Compile Include="Inspectors\LoggerMessageInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -103,9 +98,7 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -142,16 +135,6 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>KelloxPartnerWCF_KelloxPartnerNav_KelloxPartnerWS</CachedSettingsPropName>
     </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
-      <Project>{2650b3b2-b84a-4315-b1a9-d99344a30bbb}</Project>
-      <Name>Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KelloxPartnerData\KelloxPartnerData.csproj">
-      <Project>{d4c85aad-e8e3-4473-9f9b-ba0877c05717}</Project>
-      <Name>KelloxPartnerData</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
