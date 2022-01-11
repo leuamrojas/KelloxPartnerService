@@ -11,16 +11,18 @@ using System.Xml;
 namespace KelloxPartnerWCF.Inspectors
 {
     public class LoggerMessageInspector : IDispatchMessageInspector
-    {           
+    {
+        private const string Tag = "KelloxPartnerService";
         private readonly ILog _logger;
         private readonly bool _loggingOn;
-        private const string Tag = "KelloxPartnerService";
+        private readonly string _logDir;
 
         public LoggerMessageInspector(ILog logger)
         {
-            _logger = logger;
-            var logging = ConfigurationManager.AppSettings["logging"];
-            if ( !string.IsNullOrEmpty(logging) && !bool.TryParse(logging, out _loggingOn))
+            _logger = logger;            
+            _logDir = ConfigurationManager.AppSettings["LogDir"];
+            var loggingOnStr = ConfigurationManager.AppSettings["Logging"];
+            if ( !string.IsNullOrEmpty(loggingOnStr) && !bool.TryParse(loggingOnStr, out _loggingOn))
             {
                 _loggingOn = false;
             }            
@@ -131,7 +133,7 @@ namespace KelloxPartnerWCF.Inspectors
                     _logger.Info(string.Format("Response: \n\n{0}\n\n", replyAsString));
                 }                
             }
-            ResponseHandler.CreateOrderLog(buffer.CreateMessage());
+            ResponseHandler.CreateOrderLog(buffer.CreateMessage(), _logDir);
 
         }
 

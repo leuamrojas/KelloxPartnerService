@@ -2,7 +2,8 @@
 {
     public static class Constants
     {
-        public const string XmlDeclaration = "<?xml version=\"1.0\" encoding=\"ISO-8859-2\"?>";
+        //public const string XmlDeclaration = "<?xml version=\"1.0\" encoding=\"ISO-8859-2\"?>";
+        public const string XmlDeclaration = "<?xml version=\"1.0\" encoding=\"IBM865\"?>";
 
         public static class HttpResponseStatusDescription
         {

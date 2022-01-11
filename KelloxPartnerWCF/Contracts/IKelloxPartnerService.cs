@@ -8,13 +8,6 @@ namespace KelloxPartnerWCF.Contracts
     [ServiceContract]
     public interface IKelloxPartnerService
     {
-        //[OperationContract]
-        //[WebInvoke(
-        //    Method = "POST",
-        //    UriTemplate = "/ReceiveOrder",
-        //    ResponseFormat = WebMessageFormat.Xml)]
-        //XmlElement ReceiveOrder(Stream dataStream);
-
         [OperationContract]
         [WebInvoke(
             Method = "POST",

@@ -10,7 +10,7 @@ namespace KelloxPartnerWCF.Inspectors
 {
     public class ResponseHandler
     {
-        public static void CreateOrderLog(Message message)
+        public static void CreateOrderLog(Message message, string logDir)
         {
             XmlDictionaryReader bodyReader = message.GetReaderAtBodyContents();
 
@@ -21,7 +21,7 @@ namespace KelloxPartnerWCF.Inspectors
             xmlDoc.LoadXml(xmlStr);
 
             var orderNo = xmlDoc.DocumentElement.GetElementsByTagName("OrderNo").Item(0).InnerText;
-            SaveIpAddress(orderNo);
+            SaveIpAddress(orderNo, logDir);
 
             var strHttpCode = xmlDoc.DocumentElement.GetElementsByTagName("httpCode").Item(0).InnerText;
 
@@ -31,14 +31,19 @@ namespace KelloxPartnerWCF.Inspectors
             }
         }
 
-        private static void SaveIpAddress(string OrderNo)
+        private static void SaveIpAddress(string OrderNo, string logDir)
         {
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logDir);
             if (string.IsNullOrEmpty(OrderNo))
             {
-                File.WriteAllText(@"Log\Failed_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt", Utils.TryToGetClientIpAddress());
-                return;
+                path = Path.Combine(path, "Failed_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt");
+            } 
+            else
+            {
+                path = Path.Combine(path, OrderNo + ".txt");
             }
-            File.WriteAllText(@"Log\" + OrderNo + ".txt", Utils.TryToGetClientIpAddress());
+            
+            File.WriteAllText(path, Utils.TryToGetClientIpAddress());
         }
 
         private static void UpdateHttpResponse(int httpCode)
