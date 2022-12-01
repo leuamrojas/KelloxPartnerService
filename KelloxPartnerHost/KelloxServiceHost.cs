@@ -63,7 +63,7 @@ namespace KelloxPartnerHost
             _host.AddDependencyInjectionBehavior<IKelloxPartnerService>(container);
             _host.Open();
 
-            System.Diagnostics.EventLog.WriteEntry("KelloxServiceHost", "Kellox Service available at " + baseUri);
+            System.Diagnostics.EventLog.WriteEntry("KelloxServiceHost", "Kellox Partner Service available at " + baseUri);
         }
 
         private void AddMetadataBinding()

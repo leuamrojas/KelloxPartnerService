@@ -2,7 +2,7 @@
 <log4net>
   <!-- RollingFile is set to be a File Appender -->
   <appender name="RollingFile" type="log4net.Appender.RollingFileAppender">
-    <file value="KelloxPartnerLog.log" />
+    <file value="Log\log4net\KelloxPartnerLog.log" />
     <appendToFile value="true" />
     <maximumFileSize value="10MB" />
     <maxSizeRollBackups value="2" />
